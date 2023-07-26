@@ -1,0 +1,82 @@
+<%= form_for @survey do |form| %>
+  <div class="grid grid-cols-4 mt-4">
+  <% if survey.errors.any? %>
+    <div class="red col-span-full">
+      <h2><%= pluralize(survey.errors.count, "error") %> prohibited this survey from being saved:</h2>
+
+      <ul>
+        <% survey.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="col-span-1">
+    <%= form.label :title, "Survey name", class: "block" %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div class = "col-span-full mt-4"> Questions </div>
+  <div id="questions" class="col-span-full mt-1">
+    <%= render 'questions/form', id: 0, question_types: @question_types %>
+  </div>
+  
+  <div class="col-span-2 mt-4">
+        <%= link_to "/questions/partial_form", remote: true, id: "add-question", method: "get" do
+            button_tag "Add Question",
+            class: "text-white bg-blue-600 hover:bg-blue-400 rounded-lg p-2 w-32 h-10"
+      end%>
+
+    <%= button_tag "Submit", class: "text-white bg-green-600 hover:bg-green-400 rounded-lg p-2 w-32 h-10 pointer-events-auto"%>
+  </div>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  function loadQuestionBasedOnType(id) {
+    let type = $(`#survey_questions_${id}_question_types_id`).val();
+    let questionAnswers = $(`#question_${id}_answers`);
+    console.log(type);
+
+    switch(type) {
+      case "true_false":
+      case "open_answer":
+        questionAnswers.html("");
+        break;
+      case "closed_answer":
+        $.ajax({
+          url: `/questions/partial_closed/${id}`,
+          type: "get",
+          success: function(data) {
+            questionAnswers.html(data);
+          }
+        });
+        break;
+      default:
+        throw "Invalid question type";
+    }
+  }
+
+  var codeExecuted = false;
+
+  document.addEventListener('DOMContentLoaded', function(e) {
+
+    if ("importmapScriptsLoaded" in window) { 
+
+      if (!codeExecuted) {
+        $('#add-question').on('ajax:beforeSend', function(event, xhr, settings) {
+          let id = $("#questions").children("div").length;
+          settings.url = `${settings.url}/${id}`
+        });
+
+        $('#add-question').on('ajax:success', function(event, data, status, xhr) {
+          $("#questions").append(data);
+        });
+
+        codeExecuted = true; 
+      };  
+    };
+
+  });
+</script>

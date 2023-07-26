@@ -5,3 +5,7 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
+
+QuestionType.create([{ name: 'closed_answer', display_name: 'Closed Answer' },
+                     { name: 'true_false', display_name: 'True/False' },
+                     { name: 'open_answer', display_name: 'Open Answer' }])

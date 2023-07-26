@@ -1,16 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html class="h-full">
   <head>
     <title>SurveyApp</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="bg-soft-white h-full">
+    <header class="bg-gray-800 text-white">
+      <div class="container mx-auto px-5">
+        <nav class="flex items-center justify-between py-5 h-20">
+          <a href="/" class="text-2xl font-bold">SurveyApp</a>
+        </nav>
+      </div>
+    </header>
+    <main class="container mx-auto px-5 h-auto">
+      <%= yield %>
+    </main>
   </body>
 </html>
