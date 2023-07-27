@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
   def partial_form
-    @question_types = QuestionType.pluck(:display_name, :name)
-    render partial: 'form', locals: { id: params[:id] }
+    question_types = QuestionType.pluck(:display_name, :name)
+    render partial: 'form', locals: { id: params[:id], question_types: }
   end
 
   def partial_closed

@@ -3,7 +3,7 @@
     <div class="">
       <%= label_tag "survey[questions][][question_types_id]", "Type", class: "block" %>
       <%= select_tag "survey[questions][][question_types_id]",
-        options_for_select(@question_types, "open_answer"),
+        options_for_select(question_types, "open_answer"),
         onchange: "loadQuestionBasedOnType(#{id})", class: "mt-auto",
         id: "survey_questions_#{id}_question_types_id"%>
     </div>

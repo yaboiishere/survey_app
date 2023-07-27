@@ -25,7 +25,7 @@ class SurveysController < ApplicationController
       survey_params[:questions].map do |question|
         Question.new(question)
       end
-    puts survey_params
+
     @survey = Survey.new(params)
 
     respond_to do |format|

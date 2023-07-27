@@ -1,24 +1,31 @@
 <p style="color: green"><%= notice %></p>
 
+<h1 class="text-center text-3xl font-bold my-4">Surveys</h1>
 <div class="grid grid-cols-5">
 
-<table id="surveys" class="col-span-full table-auto min-w-full min-h-3/5">
-  <thead>
+<table id="surveys" class="col-span-full table-auto min-w-full min-h-3/5 border-2 border-collapse border-gray-800 mt-4 ">
+  <thead class="border-b">
     <tr>
-      <th>Title</th>
-      <th>Created at</th>
-      <th>Updated at</th>
+      <th class="border">Title</th>
+      <th class="border">Created at</th>
+      <th class="border">Updated at</th>
       <th colspan="3"></th>
     </tr>
-  <% @surveys.each do |survey| %>
-
-    <%= render survey %>
-    <p>
-      <%= link_to "Show this survey", survey %>
-    </p>
-  <% end %>
+    <% @surveys.each do |survey| %>
+      <tr class="border-b">
+        <td class="text-center border"><%= survey.title %></td>
+        <td class="text-center border"><%= survey.created_at %></td>
+        <td class="text-center border"><%= survey.updated_at %></td>
+        <td class="text-center border">
+          <%= link_to survey, class: "text-blue-600 hover:text-blue-400" do %>
+            <i class="fa-solid fa-circle-info w-4 h-4"></i>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
 </table>
 
-<%= link_to "New survey", new_survey_path, class: "text-white bg-green-600 hover:bg-green-800 rounded-lg p-2 text-sm my-2 col-start-5 mx-auto" %>
+<%= link_to "New survey", new_survey_path,
+  class: "text-white bg-green-600 hover:bg-green-800 rounded-lg p-2 text-sm my-2 col-start-5 mx-auto" %>
 
 </div>
