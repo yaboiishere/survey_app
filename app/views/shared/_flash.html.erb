@@ -1,0 +1,22 @@
+<% if notice %>
+  <div id="notice" 
+    class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" 
+    role="alert">
+    <span class="sr-only">Notice</span>
+    <div class="ml-3 text-sm font-medium">
+      <%= notice %>
+    </div>
+  </div>
+<% end %>
+
+<% if alert %>
+  <div id="alert"
+    class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+    role="alert">
+    <span class="sr-only">Alert</span>
+    <div class="ml-3 text-sm font-medium">
+      <%= alert %>
+    </div>
+  </div>
+<% end %>
+

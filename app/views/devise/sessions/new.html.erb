@@ -1,0 +1,33 @@
+<h1 class="text-center text-3xl font-bold my-4">Login</h1>
+
+<%= form_for(resource, as: resource_name, url: session_path(resource_name),
+             html: {class: "text-center"}) do |f| %>
+  <div class="field mt-2">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+
+  <div class="field mt-2">
+    <%= f.label :password %><br />
+    <%= f.password_field :password, autocomplete: "current-password" %>
+  </div>
+
+  <% if devise_mapping.rememberable? %>
+    <div class="field mt-2">
+      <%= f.check_box :remember_me %>
+      <%= f.label :remember_me %>
+    </div>
+  <% end %>
+
+  <div class="actions mt-2">
+    <%= button_tag "Log in", class: "text-white bg-green-600 hover:bg-green-400 rounded-lg p-2 w-32 h-10 pointer-events-auto"%>
+  </div>
+
+  <div class="grid grid-cols-3 justify-center gap-2">
+    <div class="col-start-2 col-span-1">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+
+<% end %>
+
