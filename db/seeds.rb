@@ -6,6 +6,12 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-QuestionType.create([{ name: 'closed_answer', display_name: 'Closed Answer' },
-                     { name: 'true_false', display_name: 'True/False' },
-                     { name: 'open_answer', display_name: 'Open Answer' }])
+QuestionType.first_or_create([{ name: 'closed_answer', display_name: 'Closed Answer' },
+                              { name: 'true_false', display_name: 'True/False' },
+                              { name: 'open_answer', display_name: 'Open Answer' }])
+
+if Rails.env == 'development'
+  User.create([{ email: 'test@gmail.com', password: '123456' }, { email: 'test2@gmail.com', password: '123456' }])
+  Survey.create([{ title: 'Test Survey', user_id: 1,
+                   questions_attributes: [{ question: 'Test Question', question_types_id: 'open_answer' }] }])
+end

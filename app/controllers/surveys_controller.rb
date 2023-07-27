@@ -1,5 +1,7 @@
 class SurveysController < ApplicationController
   before_action :set_survey, only: %i[show edit update destroy]
+  before_action :set_question_types, only: %i[new edit]
+  before_action :authenticate_user!, except: %i[index show]
 
   # GET /surveys or /surveys.json
   def index
@@ -12,7 +14,6 @@ class SurveysController < ApplicationController
   # GET /surveys/new
   def new
     @survey = Survey.new
-    @question_types = QuestionType.pluck(:display_name, :name)
   end
 
   # GET /surveys/1/edit
@@ -20,13 +21,7 @@ class SurveysController < ApplicationController
 
   # POST /surveys or /surveys.json
   def create
-    params = survey_params
-    params[:questions] =
-      survey_params[:questions].map do |question|
-        Question.new(question)
-      end
-
-    @survey = Survey.new(params)
+    @survey = Survey.new(survey_params)
 
     respond_to do |format|
       if @survey.save
@@ -69,9 +64,13 @@ class SurveysController < ApplicationController
     @survey = Survey.find(params[:id])
   end
 
+  def set_question_types
+    @question_types = QuestionType.pluck(:display_name, :name)
+  end
+
   # Only allow a list of trusted parameters through.
   def survey_params
-    params.require(:survey).permit(:title, :author,
-                                   questions: [:question, :question_types_id, { options: [] }])
+    params.require(:survey).permit(:title, :user_id,
+                                   questions_attributes: [:question, :question_types_id, { options: [] }])
   end
 end

@@ -1,23 +1,24 @@
-<div class="gap-2 border-2 border-gray-600 p-4 mt-1">
+<div class="gap-2 border-2 border-gray-600 p-4 mt-1" id=<%= "question_#{id}" %>>
   <div class="flex gap-2 justify-center justify-items-center" onload="loadQuestionBasedOnType(0)">
     <div class="">
-      <%= label_tag "survey[questions][][question_types_id]", "Type", class: "block" %>
-      <%= select_tag "survey[questions][][question_types_id]",
+      <%= label_tag "survey[questions_attributes][][question_types_id]", "Type", class: "block" %>
+      <%= select_tag "survey[questions_attributes][][question_types_id]",
         options_for_select(question_types, "open_answer"),
-        onchange: "loadQuestionBasedOnType(#{id})", class: "mt-auto",
+        onchange: "loadQuestionBasedOnType(#{id})", class: "mt-auto h-10",
         id: "survey_questions_#{id}_question_types_id"%>
     </div>
 
     <div class="ml-4 w-3/4">
-      <%= label_tag "survey[questions][][question]", "Question",  class: "block" %>
-      <%= text_field_tag "survey[questions][][question]", nil, class: "w-full" %>
+      <%= label_tag "survey[questions_attributes][][question]", "Question",  class: "block" %>
+      <%= text_field_tag "survey[questions_attributes][][question]", nil, class: "w-full h-10" %>
     </div>
     <%= button_tag "Delete", type: "button",
-      class: "col-span-1 text-white bg-red-600 hover:bg-red-400 rounded-lg text-sm mt-5 w-24",
-      onclick: "deleteQuestion(#{id})" %>
+      class: "col-span-1 text-white bg-red-600 hover:bg-red-400 rounded-lg text-sm mt-auto h-10 w-32",
+      onclick: "deleteQuestion(#{id})"%>
   </div>
   <div>
     <%= content_tag :div, id: "question_#{id}_answers", class: "" do %>
     <% end %>
   </div>
 </div>
+

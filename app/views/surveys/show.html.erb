@@ -1,10 +1,48 @@
-<p style="color: green"><%= notice %></p>
+<h1 class="text-center text-3xl font-bold my-4"><%=@survey.title%></h1>
+  <%= form_for :survey_answers, html: {class: "grid grid-cols-5"} do |f| %>
+  <%= f.hidden_field :survey_id, value: @survey.id %>
+  <% @survey.questions.each do |question| %>
+    <div class="border-gray-800 border-b border-collapse col-span-3 col-start-2 grid">
+      <h3 class="text-xl font-bold mb-1"><%= question.question %></h3>
+      <% if question.question_types_id == "open_answer" then %>
+        <%= f.text_field :answer, class: "mb-1" %>
+      <% elsif question.question_types_id == "closed_answer" then %>
+        <div class="flex justify-around my-1">
+          <% question.options.each do |option| %>
+            <div>
+              <%= f.radio_button :answer, option %>
+              <%= f.label :answer, option %>
+            </div>
+          <% end %>
+        </div>
+      <% elsif question.question_types_id == "true_false" then %>
+        <div class="flex justify-center gap-32 my-1">
+          <div>
+            <%= f.radio_button :answer, "true" %>
+            <%= f.label :answer, "True" %>
+          </div>
+          <div>
+            <%= f.radio_button :answer, "false" %>
+            <%= f.label :answer, "False" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
 
-<%= render @survey %>
+<div class="text-right mt-4">
+  <% if current_user == @survey.user then%>
+    <%= link_to "Edit",
+      edit_survey_path(@survey),
+      class: "text-white bg-green-600 hover:bg-green-400 rounded-lg p-2 text-sm my-2 col-start-5"%>
+    <%= link_to "Destroy this survey",
+      @survey,
+      method: :delete,
+      data: { confirm: "Are you sure?" },
+      class: "text-white bg-red-600 hover:bg-red-400 rounded-lg p-2 text-sm my-2 col-start-5" %>
+  <% end %>
 
-<div>
-  <%= link_to "Edit this survey", edit_survey_path(@survey) %> |
-  <%= link_to "Back to surveys", surveys_path %>
+  <%= link_to "Back to surveys", surveys_path, class: "text-white bg-blue-600 hover:bg-blue-400 rounded-lg p-2 text-sm my-2 col-start-5"%>
 
-  <%= button_to "Destroy this survey", @survey, method: :delete %>
 </div>

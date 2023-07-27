@@ -5,18 +5,19 @@
   <thead class="border-b">
     <tr>
       <th class="border">Title</th>
+      <th class="border">Author</th>
       <th class="border">Created at</th>
-      <th class="border">Updated at</th>
-      <th colspan="3"></th>
     </tr>
     <% @surveys.each do |survey| %>
       <tr class="border-b">
         <td class="text-center border"><%= survey.title %></td>
-        <td class="text-center border"><%= survey.created_at %></td>
-        <td class="text-center border"><%= survey.updated_at %></td>
-        <td class="text-center border">
-          <%= link_to survey, class: "text-blue-600 hover:text-blue-400" do %>
-            <i class="fa-solid fa-circle-info w-4 h-4"></i>
+        <td class="text-center border"><%= survey.user.email %></td>
+        <td class="text-center border"><%= survey.created_at.to_formatted_s(:short)%></td>
+        <td class="text-center border p-1 w-72">
+          <%= link_to "Fill out", survey, class: "text-sm text-white bg-blue-600 hover:bg-blue-400 rounded-md p-1"%>
+          <% if survey.user == current_user %>
+            <%= link_to "Edit", edit_survey_path(survey), class: "text-sm text-white bg-green-600 hover:bg-green-400 rounded-md p-1"%>
+            <%= link_to "Delete", survey, method: :delete, data: { confirm: "Are you sure?" }, class: "text-sm text-white bg-red-600 hover:bg-red-400 rounded-md p-1"%>
           <% end %>
         </td>
       </tr>
@@ -24,6 +25,6 @@
 </table>
 
 <%= link_to "New survey", new_survey_path,
-  class: "text-white bg-green-600 hover:bg-green-400 rounded-lg p-2 text-sm my-2 col-start-5 mx-auto" %>
+  class: "text-white bg-green-600 hover:bg-green-400 rounded-lg p-2 text-sm my-2 col-start-5 mx-auto mr-0" %>
 
 </div>

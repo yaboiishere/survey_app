@@ -1,35 +1,43 @@
 <%= form_for @survey do |form| %>
   <div class="grid grid-cols-4 mt-4">
-  <% if survey.errors.any? %>
-    <div class="red col-span-full">
-      <h2><%= pluralize(survey.errors.count, "error") %> prohibited this survey from being saved:</h2>
+    <%= form.hidden_field :user_id, value: current_user.id %>
+    <% if survey.errors.any? %>
+      <div class="red col-span-full">
+        <h2><%= pluralize(survey.errors.count, "error") %> prohibited this survey from being saved:</h2>
 
-      <ul>
-        <% survey.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+        <ul>
+          <% survey.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="col-span-1">
+      <%= form.label :title, "Survey name", class: "block" %>
+      <%= form.text_field :title %>
     </div>
-  <% end %>
 
-  <div class="col-span-1">
-    <%= form.label :title, "Survey name", class: "block" %>
-    <%= form.text_field :title %>
-  </div>
-
-  <div class = "col-span-full mt-4"> Questions </div>
-  <div id="questions" class="col-span-full mt-1">
-    <%= render 'questions/form', id: 0, question_types: @question_types %>
-  </div>
-  
-  <div class="col-span-2 mt-4">
-        <%= link_to "/questions/partial_form", remote: true, id: "add-question", method: "get" do
-            button_tag "Add Question",
-            class: "text-white bg-blue-600 hover:bg-blue-400 rounded-lg p-2 w-32 h-10"
+    <div class = "col-span-full mt-4"> Questions </div>
+    <div id="questions" class="col-span-full mt-1">
+      <%= render 'questions/form', id: 0, question_types: @question_types %>
+    </div>
+    
+    <div class="col-span-full mt-4 text-right">
+      <%= link_to "/questions/partial_form", remote: true, id: "add-question", method: "get" do
+        button_tag "Add Question",
+        class: "text-white bg-blue-600 hover:bg-blue-400 rounded-lg p-2 w-32 h-10"
       end%>
+      <div class="mt-4">
+        <%= link_to surveys_path do
+          button_tag "Back to surveys",
+            class: "text-white bg-red-600 hover:bg-red-400 rounded-lg p-2 h-10"
+        end%>
 
-    <%= button_tag "Submit", class: "text-white bg-green-600 hover:bg-green-400 rounded-lg p-2 w-32 h-10 pointer-events-auto"%>
-  </div>
+        <%= button_tag "Submit",
+          class: "text-white bg-green-600 hover:bg-green-400 rounded-lg p-2 w-34 h-10 pointer-events-auto"%>
+      </div>
+    </div>
   </div>
 <% end %>
 
@@ -58,13 +66,17 @@
     }
   }
 
+  function deleteQuestion(id) {
+      $(`#question_${id}`).html("").hide();
+  }
+
+
   var codeExecuted = false;
 
   document.addEventListener('DOMContentLoaded', function(e) {
 
     if ("importmapScriptsLoaded" in window) { 
 
-      if (!codeExecuted) {
         $('#add-question').on('ajax:beforeSend', function(event, xhr, settings) {
           let id = $("#questions").children("div").length;
           settings.url = `${settings.url}/${id}`
@@ -74,8 +86,9 @@
           $("#questions").append(data);
         });
 
+        $("div[id|='']").length
+
         codeExecuted = true; 
-      };  
     };
 
   });

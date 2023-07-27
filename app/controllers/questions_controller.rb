@@ -1,4 +1,5 @@
 class QuestionsController < ApplicationController
+  before_action :authenticate_user!
   def partial_form
     question_types = QuestionType.pluck(:display_name, :name)
     render partial: 'form', locals: { id: params[:id], question_types: }
