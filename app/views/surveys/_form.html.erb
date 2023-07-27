@@ -20,7 +20,13 @@
 
     <div class = "col-span-full mt-4"> Questions </div>
     <div id="questions" class="col-span-full mt-1">
-      <%= render 'questions/form', id: 0, question_types: @question_types %>
+      <% if @survey.questions == [] then%>
+        <%= render 'questions/form', id: 0, question: nil, question_types: @question_types%>
+      <%else%>
+        <% @survey.questions.each.with_index do |question, index| %>
+          <%= render 'questions/form', id: index, question: question, question_types: @question_types %>
+        <%end%>
+      <%end%>
     </div>
     
     <div class="col-span-full mt-4 text-right">
@@ -85,8 +91,6 @@
         $('#add-question').on('ajax:success', function(event, data, status, xhr) {
           $("#questions").append(data);
         });
-
-        $("div[id|='']").length
 
         codeExecuted = true; 
     };

@@ -1,10 +1,4 @@
-<h1>Editing survey</h1>
+<h1 class="text-center text-3xl font-bold my-4">Edit survey</h1>
 
-<%= render "form", survey: @survey %>
+<%= render "form", survey: @survey, questions: @questions%>
 
-<br>
-
-<div>
-  <%= link_to "Show this survey", @survey %> |
-  <%= link_to "Back to surveys", surveys_path %>
-</div>
