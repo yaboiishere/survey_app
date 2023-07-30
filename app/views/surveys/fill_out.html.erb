@@ -1,0 +1,48 @@
+<h1 class="text-center text-3xl font-bold my-4"><%= @survey.title %></h1>
+<%= form_for :answers, method: "post", url: survey_answers_path(@survey), html: { class: "grid grid-cols-5", id: "answer-form" } do |f| %>
+  <% @survey.questions.each do |question| %>
+    <%= hidden_field_tag "answers[]question_id", question.id %>
+    <div class="border-gray-800 border-b border-collapse col-span-3 col-start-2 grid mb-1">
+      <h3 class="text-xl font-bold mb-1"><%= question.question %></h3>
+      <% if question.question_types_id == "open_answer" %>
+        <%= text_field_tag "answers[]answer", nil, class: "mb-1" %>
+      <% elsif question.question_types_id == "closed_answer" then %>
+        <div class="flex justify-around my-1">
+          <% question.options.each do |option| %>
+            <div>
+              <%= radio_button_tag "answers[]answer", option %>
+              <%= label_tag "answers[]answer", option %>
+            </div>
+          <% end %>
+        </div>
+      <% elsif question.question_types_id == "true_false" then %>
+        <div class="flex justify-center gap-32 my-1">
+          <div>
+            <%= radio_button_tag "answers[]answer", "true" %>
+            <%= label_tag "answers[]answer", "True" %>
+          </div>
+          <div>
+            <%= radio_button_tag "answers[]answer", "false" %>
+            <%= label_tag "answers[]answer", "False" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+
+<div class="text-right mt-4">
+  <%= button_tag "Submit", form: "answer-form", class: "text-white bg-green-600 hover:bg-green-400 rounded-lg p-2 text-sm my-2 col-start-5" %>
+  <% if current_user == @survey.user %>
+    <%= link_to "Edit",
+                edit_survey_path(@survey),
+                class: "text-white bg-yellow-600 hover:bg-yellow-400 rounded-lg p-2 text-sm my-2 col-start-5" %>
+    <%= link_to "Destroy this survey",
+                @survey,
+                method: :delete,
+                data: { confirm: "Are you sure?" },
+                class: "text-white bg-red-600 hover:bg-red-400 rounded-lg p-2 text-sm my-2 col-start-5" %>
+  <% end %>
+
+  <%= link_to "Back to surveys", surveys_path, class: "text-white bg-blue-600 hover:bg-blue-400 rounded-lg p-2 text-sm my-2 col-start-5" %>
+</div>

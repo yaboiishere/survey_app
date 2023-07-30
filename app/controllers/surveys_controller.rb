@@ -1,12 +1,15 @@
 class SurveysController < ApplicationController
-  before_action :set_survey, only: %i[show edit update destroy]
-  before_action :set_question_types, only: %i[new edit]
-  before_action :authenticate_user!, except: %i[index show]
+  before_action :set_survey, only: %i[show edit update destroy fill_out]
+  before_action :set_question_types, only: %i[new edit create update]
+  before_action :authenticate_user!, except: %i[index fill_out]
 
   # GET /surveys or /surveys.json
   def index
     @surveys = Survey.all
   end
+
+  # GET /surveys/1/fill_out
+  def fill_out; end
 
   # GET /surveys/1 or /surveys/1.json
   def show; end
@@ -21,6 +24,7 @@ class SurveysController < ApplicationController
 
   # POST /surveys or /surveys.json
   def create
+    puts survey_params.inspect
     @survey = Survey.new(survey_params)
 
     respond_to do |format|
@@ -37,7 +41,7 @@ class SurveysController < ApplicationController
   # PATCH/PUT /surveys/1 or /surveys/1.json
   def update
     respond_to do |format|
-      if @survey.update(survey_params)
+      if @survey.update!(survey_params)
         format.html { redirect_to survey_url(@survey), notice: 'Survey was successfully updated.' }
         format.json { render :show, status: :ok, location: @survey }
       else
@@ -61,7 +65,7 @@ class SurveysController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_survey
-    @survey = Survey.find(params[:id])
+    @survey = Survey.find(params[:id] || params[:survey_id])
   end
 
   def set_question_types
@@ -70,7 +74,8 @@ class SurveysController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def survey_params
-    params.require(:survey).permit(:title, :user_id,
-                                   questions_attributes: [:question, :question_types_id, { options: [] }])
+    params.require(:survey).permit(:title, :user_id, :id,
+                                   questions_attributes:
+                                     [:id, :question, :question_types_id, :_destroy, { options: [] }])
   end
 end

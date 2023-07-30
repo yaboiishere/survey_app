@@ -1,18 +1,8 @@
-<div id="choices" class="grid grid-flow-col gap-1 w-full">
-  <div class="col-span-1">
-    <%= label_tag "survey[questions_attributessd][][options][]", "Option 1" %>
-    <%= text_field_tag "survey[questions_attributes][][options][]", nil, class: "w-full" %>
-  </div>
-  <div class="col-span-1">
-    <%= label_tag "survey[questions_attributes][][options][]", "Option 2" %>
-    <%= text_field_tag "survey[questions_attributes][][options][]", nil, class: "w-full" %>
-  </div>
-  <div class="col-span-1">
-    <%= label_tag "survey[questions_attributes][][options][]", "Option 3" %>
-    <%= text_field_tag "survey[questions_attributes][][options][]", nil, class: "w-full" %>
-  </div>
-  <div class="col-span-1">
-    <%= label_tag "survey[questions_attributes][][options][]", "Option 4" %>
-    <%= text_field_tag "survey[questions_attributes][][options][]", nil, class: "w-full" %>
-  </div>
-<div>
+<div class="col-span-1">
+  <%= f.label :options, "Option" %>
+  <%= if option.nil?
+       f.text_field :options, class: "w-full", multiple: true
+     else
+       f.text_field :options, class: "w-full", multiple: true, value: option
+     end %>
+</div>

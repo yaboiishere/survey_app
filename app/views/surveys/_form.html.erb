@@ -1,99 +1,56 @@
-<%= form_for @survey do |form| %>
+<%= form_for @survey do |f| %>
   <div class="grid grid-cols-4 mt-4">
-    <%= form.hidden_field :user_id, value: current_user.id %>
-    <% if survey.errors.any? %>
-      <div class="red col-span-full">
-        <h2><%= pluralize(survey.errors.count, "error") %> prohibited this survey from being saved:</h2>
-
-        <ul>
-          <% survey.errors.each do |error| %>
-            <li><%= error.full_message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+    <%= f.hidden_field :user_id, value: current_user.id %>
+    <%= f.hidden_field :id, value: @survey.id %>
+    <%= render "shared/model_errors_flash", model: survey %>
 
     <div class="col-span-1">
-      <%= form.label :title, "Survey name", class: "block" %>
-      <%= form.text_field :title %>
+      <%= f.label :title, "Survey name", class: "block" %>
+      <%= f.text_field :title %>
     </div>
 
-    <div class = "col-span-full mt-4"> Questions </div>
+    <div class="col-span-full mt-4"> Questions</div>
     <div id="questions" class="col-span-full mt-1">
-      <% if @survey.questions == [] then%>
-        <%= render 'questions/form', id: 0, question: nil, question_types: @question_types%>
-      <%else%>
-        <% @survey.questions.each.with_index do |question, index| %>
-          <%= render 'questions/form', id: index, question: question, question_types: @question_types %>
-        <%end%>
-      <%end%>
+      <%= f.fields_for :questions do |question_form|
+        render 'questions/form', f: question_form
+      end %>
     </div>
-    
     <div class="col-span-full mt-4 text-right">
-      <%= link_to "/questions/partial_form", remote: true, id: "add-question", method: "get" do
-        button_tag "Add Question",
-        class: "text-white bg-blue-600 hover:bg-blue-400 rounded-lg p-2 w-32 h-10"
-      end%>
+      <%= link_to_add_association button_tag("Add Question",
+                                             class: "text-white bg-blue-600 hover:bg-blue-400 rounded-lg p-2 w-32 h-10"),
+                                  f, :questions, partial: 'questions/form' %>
       <div class="mt-4">
         <%= link_to surveys_path do
           button_tag "Back to surveys",
-            class: "text-white bg-red-600 hover:bg-red-400 rounded-lg p-2 h-10"
-        end%>
+                     class: "text-white bg-red-600 hover:bg-red-400 rounded-lg p-2 h-10"
+        end %>
 
         <%= button_tag "Submit",
-          class: "text-white bg-green-600 hover:bg-green-400 rounded-lg p-2 w-34 h-10 pointer-events-auto"%>
+                       class: "text-white bg-green-600 hover:bg-green-400 rounded-lg p-2 w-34 h-10 pointer-events-auto" %>
       </div>
     </div>
   </div>
 <% end %>
 
 <script type="text/javascript">
-  function loadQuestionBasedOnType(id) {
-    let type = $(`#survey_questions_${id}_question_types_id`).val();
-    let questionAnswers = $(`#question_${id}_answers`);
-    console.log(type);
+    function loadQuestionBasedOnType(el) {
+        console.log(el)
+        let type = el.val();
+        console.log(type);
+        let questionAnswers = el.parent().parent().children("#closed_answers")
+        console.log(questionAnswers)
 
-    switch(type) {
-      case "true_false":
-      case "open_answer":
-        questionAnswers.html("");
-        break;
-      case "closed_answer":
-        $.ajax({
-          url: `/questions/partial_closed/${id}`,
-          type: "get",
-          success: function(data) {
-            questionAnswers.html(data);
-          }
-        });
-        break;
-      default:
-        throw "Invalid question type";
+        switch (type) {
+            case "true_false":
+            case "open_answer":
+                questionAnswers.hide();
+                break;
+            case "closed_answer":
+                questionAnswers.show();
+                break;
+            default:
+                throw "Invalid question type";
+        }
     }
-  }
 
-  function deleteQuestion(id) {
-      $(`#question_${id}`).html("").hide();
-  }
-
-
-  var codeExecuted = false;
-
-  document.addEventListener('DOMContentLoaded', function(e) {
-
-    if ("importmapScriptsLoaded" in window) { 
-
-        $('#add-question').on('ajax:beforeSend', function(event, xhr, settings) {
-          let id = $("#questions").children("div").length;
-          settings.url = `${settings.url}/${id}`
-        });
-
-        $('#add-question').on('ajax:success', function(event, data, status, xhr) {
-          $("#questions").append(data);
-        });
-
-        codeExecuted = true; 
-    };
-
-  });
 </script>

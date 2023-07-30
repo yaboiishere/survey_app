@@ -2,10 +2,11 @@ Rails.application.routes.draw do
   devise_for :users
   root 'surveys#index'
 
-  get 'questions/partial_form/:id', to: 'questions#partial_form'
-  get 'questions/partial_closed/:id', to: 'questions#partial_closed'
-  get 'questions/partial_true_false/:id', to: 'questions#partial_true_false'
-  resources :surveys
+  resources :surveys do
+    resources :answers, only: %i[create show]
+    post 'answer', to: 'surveys#answer'
+    get 'fill_out', to: 'surveys#fill_out'
+  end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

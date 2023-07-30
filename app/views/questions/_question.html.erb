@@ -1,0 +1,20 @@
+<div class="my-4">
+  <h2 class="text-xl font-bold"><%= question.question_type.display_name %> - <%= question.question %></h2>
+  <ul>
+    <% if question.answers == [] %>
+      <li>No responses yet</li>
+    <% else %>
+      <% question.answers.each do |answer| %>
+        <% if answer.question.question_types_id == "open_answer" %>
+          <li> <%= answer.answer %> - <%= answer.count %> responses</li>
+        <% elsif answer.question.question_types_id == "closed_answer" %>
+          <% answers_count = question.answers.map(&:count).sum %>
+          <li> <%= answer.answer %> - <%= answer.count %> responses - <%= answers_count %></li>
+        <% elsif answer.question.question_types_id == "true_false" %>
+          <li> <%= answer.answer %> - <%= answer.count %> responses</li>
+        <% end %>
+
+      <% end %>
+    <% end %>
+  </ul>
+</div>

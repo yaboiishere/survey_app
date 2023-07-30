@@ -1,38 +1,29 @@
-<div class="gap-2 border-2 border-gray-600 p-4 mt-1" id=<%= "question_#{id}" %>>
-  <div class="flex gap-2 justify-center justify-items-center" onload="loadQuestionBasedOnType(0)">
+<div class="nested-fields gap-2 border-2 border-gray-600 p-4 mt-1 col-span-full">
+  <div class="flex flex-wrap gap-2 justify-center justify-items-center">
     <div class="">
-      <% if question.nil? then %>
-        <%= label_tag "survey[questions_attributes][][question_types_id]", "Type", class: "block"%>
-        <%= select_tag "survey[questions_attributes][][question_types_id]",
-          options_for_select(question_types, "open_answer"),
-          onchange: "loadQuestionBasedOnType(#{id})", class: "mt-auto h-10",
-          id: "survey_questions_#{id}_question_types_id"%>
-      <%else%>
-        <%= content_tag :div, class: "mt-auto h-10" do
-          question.question_types_id
-        end %>
-      <%end%>
+      <%= f.label :question_types_id, "Type", class: "block" %>
+      <%= f.select :question_types_id,
+                   options_for_select(@question_types, f.object.question_types_id || "open_answer"),
+                   {},
+                   class: "mt-auto h-10", onchange: "loadQuestionBasedOnType($(this))" %>
     </div>
 
     <div class="ml-4 w-3/4">
-      <% if question.nil? then %>
-        <%= label_tag "survey[questions_attributes][][question]", "Question",  class: "block"%>
-        <%= text_field_tag "survey[questions_attributes][][question]", nil, class: "w-full h-10"%>
+      <%= f.label :question, "Question", class: "block" %>
+      <%= f.text_field :question, class: "w-full h-10" %>
+    </div>
+    <div id="closed_answers" class="grid-cols-full flex gap-4" style="<%= if f.object.question_types_id != "closed_answer"
+                                                                 "display: none"
+                                                               end %>">
+      <% if action_name == "edit" %>
+        <% f.object.options.each do |option| %>
+          <%= render "questions/closed", f: f, option: option%>
+        <% end %>
       <% else %>
-          <%= content_tag :div, class: "" do
-            question.question
-          end %>
+        <% (0..3).each do |index| %>
+          <%= render "questions/closed", f: f, option: nil%>
+        <% end %>
       <% end %>
     </div>
-    <%= button_tag "Delete", type: "button",
-      class: "col-span-1 text-white bg-red-600 hover:bg-red-400 rounded-lg text-sm mt-auto h-10 w-32",
-      onclick: "deleteQuestion(#{id})"%>
-  </div>
-  <div>
-    <%if question.nil? then%>
-      <%= content_tag :div, id: "question_#{id}_answers", class: "" do
-      end%>
-    <% end %>
   </div>
 </div>
-

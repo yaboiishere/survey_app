@@ -10,10 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_27_121051) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_30_135851) do
+  create_table "answers", force: :cascade do |t|
+    t.integer "question_id", null: false
+    t.string "answer", null: false
+    t.integer "count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id", "answer"], name: "index_answers_on_question_id_and_answer", unique: true
+    t.index ["question_id"], name: "index_answers_on_question_id"
+  end
+
+  create_table "options", force: :cascade do |t|
+    t.string "option"
+    t.integer "question_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_options_on_question_id"
+  end
+
   create_table "question_types", id: false, force: :cascade do |t|
-    t.string "name"
-    t.string "display_name"
+    t.string "name", null: false
+    t.string "display_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_question_types_on_name", unique: true
@@ -50,6 +68,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_27_121051) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "answers", "questions"
+  add_foreign_key "options", "questions"
   add_foreign_key "questions", "surveys"
   add_foreign_key "surveys", "users"
 end
