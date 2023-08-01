@@ -1,24 +1,33 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Simple Ruby on Rails surveys app
 
-Things you may want to cover:
+#### To run the app:
 
-* Ruby version
+- Clone the repository
+- Run `docker-compose up`
+- In a separate terminal run `docker-compose run web rake db:seed`to generate the data needed for the app
 
-* System dependencies
+#### To use the app:
+- Go to `localhost:3000` in your browser
+- You can fill out a survey
+- You can create an account and log in
+- Once logged in you can create a survey
+- You can also view the results of the surveys you have created
 
-* Configuration
+### Run rake/rails tasks:
+- Run `docker-compose run web rake <task_name>` to run a rake task
+- Run `docker-compose run web rails <task_name>` to run a rails task
 
-* Database creation
+#### To reset the database:
+- Run `docker-compose run web rake db:reset`
 
-* Database initialization
+#### To run the tests:
 
-* How to run the test suite
+- The tests are run when the app is started
+- To run them manually use `docker-compose run web rake test`
 
-* Services (job queues, cache servers, search engines, etc.)
+#### Versions:
 
-* Deployment instructions
-
-* ...
+- Ruby version: 3.1.4
+- Rails version: 7.0.6

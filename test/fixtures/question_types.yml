@@ -1,7 +1,12 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
+# test/fixtures/question_types.yml
 one:
-  name: 
+  name: "open_answer"
+  display_name: "Open Answer"
 
 two:
-  name: 
+  name: "closed_answer"
+  display_name: "Closed Answer"
+
+three:
+  name: "true_false"
+  display_name: "True or False"

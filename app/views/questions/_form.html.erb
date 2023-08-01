@@ -10,19 +10,17 @@
 
     <div class="ml-4 w-3/4">
       <%= f.label :question, "Question", class: "block" %>
-      <%= f.text_field :question, class: "w-full h-10" %>
+      <%= f.text_field :question, class: "w-full h-10", required: true %>
     </div>
+    <%= link_to_remove_association button_tag("Delete", class: "text-white bg-red-600 hover:bg-red-400 rounded-lg p-2 w-32 h-10"), f, class: "mt-auto" %>
     <div id="closed_answers" class="grid-cols-full flex gap-4" style="<%= if f.object.question_types_id != "closed_answer"
-                                                                 "display: none"
-                                                               end %>">
-      <% if action_name == "edit" %>
-        <% f.object.options.each do |option| %>
-          <%= render "questions/closed", f: f, option: option%>
-        <% end %>
-      <% else %>
-        <% (0..3).each do |index| %>
-          <%= render "questions/closed", f: f, option: nil%>
-        <% end %>
+                                                                            "display: none"
+                                                                          end %>">
+      <% (0..3).each do |index| %>
+        <%= render "questions/closed",
+                   f: f,
+                   option: f.object.options[index],
+                   required: f.object.question_types_id == "closed_answer" %>
       <% end %>
     </div>
   </div>

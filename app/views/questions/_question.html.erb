@@ -4,16 +4,24 @@
     <% if question.answers == [] %>
       <li>No responses yet</li>
     <% else %>
-      <% question.answers.each do |answer| %>
-        <% if answer.question.question_types_id == "open_answer" %>
-          <li> <%= answer.answer %> - <%= answer.count %> responses</li>
-        <% elsif answer.question.question_types_id == "closed_answer" %>
-          <% answers_count = question.answers.map(&:count).sum %>
-          <li> <%= answer.answer %> - <%= answer.count %> responses - <%= answers_count %></li>
-        <% elsif answer.question.question_types_id == "true_false" %>
-          <li> <%= answer.answer %> - <%= answer.count %> responses</li>
-        <% end %>
-
+      <% question.answers.each do |answer|
+        response = "response".pluralize(answer.count)
+        answers_count = question.answers.map(&:count).sum
+        answer_f = answer.count.to_f / answers_count
+        answer_percentage = answer_f.round(2) * 100%>
+        <li class="grid grid-cols-2 mb-2">
+          <div class="col-span-1 w-72">
+            <%= "#{answer.answer} - #{answer.count} #{response}" %>
+          </div>
+          <div class="flex col-span-1">
+            <div class="w-16">
+              <%= "#{answer_percentage.round(2)} %" %>
+            </div>
+            <div class="w-72 h-6 bg-gray-200 rounded-full">
+              <div class="h-6 bg-blue-600 rounded-full" style="width: <%= answer_percentage.to_i %>%"></div>
+            </div>
+          </div>
+        </li>
       <% end %>
     <% end %>
   </ul>

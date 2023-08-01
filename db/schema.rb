@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_30_135851) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_28_132605) do
   create_table "answers", force: :cascade do |t|
     t.integer "question_id", null: false
     t.string "answer", null: false
@@ -19,14 +19,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_30_135851) do
     t.datetime "updated_at", null: false
     t.index ["question_id", "answer"], name: "index_answers_on_question_id_and_answer", unique: true
     t.index ["question_id"], name: "index_answers_on_question_id"
-  end
-
-  create_table "options", force: :cascade do |t|
-    t.string "option"
-    t.integer "question_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["question_id"], name: "index_options_on_question_id"
   end
 
   create_table "question_types", id: false, force: :cascade do |t|
@@ -69,7 +61,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_30_135851) do
   end
 
   add_foreign_key "answers", "questions"
-  add_foreign_key "options", "questions"
   add_foreign_key "questions", "surveys"
   add_foreign_key "surveys", "users"
 end

@@ -1,8 +1,4 @@
 <div class="col-span-1">
   <%= f.label :options, "Option" %>
-  <%= if option.nil?
-       f.text_field :options, class: "w-full", multiple: true
-     else
-       f.text_field :options, class: "w-full", multiple: true, value: option
-     end %>
+  <%= f.text_field :options, class: "w-full", multiple: true, value: option %>
 </div>

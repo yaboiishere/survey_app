@@ -1,9 +1,9 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  question: one
-  answer: MyString
+  question_id: 1
+  answer: "Example Answer 1"
+  count: 1
 
 two:
-  question: two
-  answer: MyString
+  question_id: 2
+  answer: "Example Answer 2"
+  count: 5

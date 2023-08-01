@@ -12,7 +12,9 @@ class SurveysController < ApplicationController
   def fill_out; end
 
   # GET /surveys/1 or /surveys/1.json
-  def show; end
+  def show
+    @responses = @survey.questions.map(&:answers).flatten.map(&:count).sum / @survey.questions.count
+  end
 
   # GET /surveys/new
   def new
@@ -24,7 +26,6 @@ class SurveysController < ApplicationController
 
   # POST /surveys or /surveys.json
   def create
-    puts survey_params.inspect
     @survey = Survey.new(survey_params)
 
     respond_to do |format|
